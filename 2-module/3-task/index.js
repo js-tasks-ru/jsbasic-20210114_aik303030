@@ -1,7 +1,7 @@
 let calculator = {
   read(a, b) {
-    this.number1 = (a !== '' && a !== null && Math.abs(+a) !== Infinity && !isNaN(+a)) ? +a : undefined;
-    this.number2 = (b !== '' && b !== null && Math.abs(+b) !== Infinity && !isNaN(+b)) ? +b : undefined;
+    this.number1 = (isFinite(a)) ? +a : undefined;
+    this.number2 = (isFinite(a)) ? +b : undefined;
   },
   sum() {
     if(this.number1 === undefined || this.number2 === undefined) {
