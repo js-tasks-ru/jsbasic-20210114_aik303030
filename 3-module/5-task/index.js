@@ -3,6 +3,17 @@
  * @param   {string} str -  входные данные
  * @returns {{min:number, max:number}}  объект
  */
+
 function getMinMax(str) {
-  // ваш код...
+  let numbers = str
+    .split(/\s|, */)
+    .filter(item => {
+      if (isFinite(item)) {
+        return parseFloat(item);
+      }
+    });
+  let result = {};
+  result.min = Math.min(...numbers);
+  result.max = Math.max(...numbers);
+  return result;
 }
