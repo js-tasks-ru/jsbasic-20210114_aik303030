@@ -4,7 +4,6 @@
  */
 function highlight(table) {
     tbody = table.querySelector('tbody');
-    console.log(tbody.rows);
     
     for(let i = 0; i < tbody.rows.length; i++) {
         if(tbody.rows[i].cells[3].dataset.available === 'true') {
