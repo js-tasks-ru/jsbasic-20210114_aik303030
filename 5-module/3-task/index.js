@@ -6,26 +6,27 @@ function initCarousel() {
 
   let slideIndex = 0;
   arrowLeft.style.display = 'none';
+  let sliderTransform = 0;
 
   function checkDisplay() {
-    if(slideIndex === 0) {
+    if (slideIndex === 0) {
       arrowLeft.style.display = 'none';
     } else {
       arrowLeft.style.display = '';
     }
-  
-    if(slideIndex === 3) {
+
+    if (slideIndex === 3) {
       arrowRight.style.display = 'none';
     } else {
       arrowRight.style.display = '';
     }
-  }  
+  }
 
   arrowLeft.addEventListener('click', function() {
     const slide = slides[slideIndex];
     const width = slide.offsetWidth;
-    console.log(width);
-    carouselInner.style.transform = `translateX(${width}px)`;
+    sliderTransform = sliderTransform + width;
+    carouselInner.style.transform = `translateX(${sliderTransform}px)`;
     slideIndex--;
     checkDisplay();
   });
@@ -33,8 +34,8 @@ function initCarousel() {
   arrowRight.addEventListener('click', function() {
     const slide = slides[slideIndex];
     const width = slide.offsetWidth;
-    console.log(width);
-    carouselInner.style.transform = `translateX(${-width}px)`;
+    sliderTransform = sliderTransform - width;
+    carouselInner.style.transform = `translateX(${sliderTransform}px)`;
     slideIndex++;
     checkDisplay();
   });
