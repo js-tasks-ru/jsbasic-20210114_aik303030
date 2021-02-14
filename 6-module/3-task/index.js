@@ -22,38 +22,53 @@ export default class Carousel {
 
     for(let slide of this.slidesArr) {
       const slideInner = document.createElement('div');
-      slideInner.insertAdjacentHTML('afterBegin', `
-        <div class="carousel__slide" data-id="${slide.id}">
-        <img src="/assets/images/carousel/${slide.image}" class="carousel__img" alt="slide">
-        <div class="carousel__caption">
-          <span class="carousel__price">€${slide.price}</span>
-          <div class="carousel__title">${slide.name}</div>
-          <button type="button" class="carousel__button">
-            <img src="/assets/images/icons/plus-icon.svg" alt="icon">
-          </button>
-        </div>
-      </div>
+      slideInner.classList.add('carousel__slide');
+      slideInner.setAttribute('data-id', slide.id);
+
+      slideInner.insertAdjacentHTML('afterbegin', `
+          <img src="/assets/images/carousel/${slide.image}" class="carousel__img" alt="slide">
+          <div class="carousel__caption">
+            <span class="carousel__price">€${slide.price}</span>
+            <div class="carousel__title">${slide.name}</div>
+            <button type="button" class="carousel__button">
+              <img src="/assets/images/icons/plus-icon.svg" alt="icon">
+            </button>
+          </div>
       `);
-
-      this.carouselInner.appendChild(slideInner);
-
-      const addingProductEvent = new CustomEvent("product-add", {
-        detail: slide.id,
-        bubbles: true
-      });
-
+      this.carouselInner.append(slideInner);
       const button = slideInner.querySelector('.carousel__button');
-
       button.addEventListener('click', () => {
-        this.elem.dispatchEvent(addingProductEvent);
+        this.elem.dispatchEvent(new CustomEvent("product-add", {
+          detail: slide.id,
+          bubbles: true
+        }));
       });
     }
 
     this.arrowRight = this.elem.querySelector('.carousel__arrow_right');
     this.arrowLeft = this.elem.querySelector('.carousel__arrow_left');
+    this.arrowLeft.style.display = 'none';
     this.slideIndex = 0;
     this.sliderTransform = 0;
     this.slides = this.elem.querySelectorAll('.carousel__slide');
+
+    this.arrowLeft.addEventListener('click', () => {
+      const slide = this.slides[this.slideIndex];
+      const width = slide.offsetWidth;
+      this.sliderTransform = this.sliderTransform + width;
+      this.carouselInner.style.transform = `translateX(${this.sliderTransform}px)`;
+      this.slideIndex--;
+      this.checkDisplay();
+    });
+
+    this.arrowRight.addEventListener('click', () => {
+      const slide = this.slides[this.slideIndex];
+      const width = slide.offsetWidth;
+      this.sliderTransform = this.sliderTransform - width;
+      this.carouselInner.style.transform = `translateX(${this.sliderTransform}px)`;
+      this.slideIndex++;
+      this.checkDisplay();
+    });
   }
 
   checkDisplay() {
@@ -68,31 +83,5 @@ export default class Carousel {
     } else {
       this.arrowRight.style.display = '';
     }
-  }
-
-  initCarousel() {
-    this.checkDisplay();
-    const carouselInner = this.elem.querySelector('.carousel__inner');
-    const slides = this.elem.querySelectorAll('.carousel__slide');
-
-    let sliderTransform = 0;
-
-    this.arrowLeft.addEventListener('click', () => {
-      const slide = slides[slideIndex];
-      const width = slide.offsetWidth;
-      sliderTransform = sliderTransform + width;
-      carouselInner.style.transform = `translateX(${sliderTransform}px)`;
-      this.slideIndex--;
-      this.checkDisplay();
-    });
-
-    this.arrowRight.addEventListener('click', () => {
-      const slide = slides[slideIndex];
-      const width = slide.offsetWidth;
-      sliderTransform = sliderTransform - width;
-      carouselInner.style.transform = `translateX(${sliderTransform}px)`;
-      this.slideIndex++;
-      this.checkDisplay();
-    });
   }
 }
