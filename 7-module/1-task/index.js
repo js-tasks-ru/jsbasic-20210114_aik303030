@@ -37,8 +37,36 @@ export default class RibbonMenu {
         this.arrowLeft = this.elem.querySelector('.ribbon__arrow_left');
         this.arrowRight = this.elem.querySelector('.ribbon__arrow_right');
 
-        this.checkArrows();
         this.initArrows();
+        this.initMenu();
+    }
+
+    initArrows() {
+        this.arrowLeft.addEventListener('click', () => {
+            this.ribbonInner.scrollBy(-350, 0);
+        });
+
+        this.arrowRight.addEventListener('click', () => {
+            this.ribbonInner.scrollBy(350, 0);
+        });
+
+    }
+
+    checkArrows() {
+        if(this.ribbonInner.scrollLeft === 0) {
+            this.arrowLeft.classList.remove('ribbon__arrow_visible');
+        } else {
+            this.arrowLeft.classList.add('ribbon__arrow_visible');
+        }
+        if((this.ribbonInner.scrollWidth - this.ribbonInner.scrollLeft - this.ribbonInner.clientWidth) < 1) {
+            this.arrowRight.classList.remove('ribbon__arrow_visible');
+        } else {
+            this.arrowRight.classList.add('ribbon__arrow_visible');
+        }
+    }
+
+    initMenu() {
+        this.checkArrows();
 
         this.ribbonInner.addEventListener('scroll', () => {
             this.checkArrows();
@@ -58,45 +86,7 @@ export default class RibbonMenu {
                 });
 
                 this.elem.dispatchEvent(customEvent);
-                console.log('event dispatched');
             }
         });
-
-    }
-
-    initArrows() {
-        this.arrowLeft.addEventListener('click', () => {
-            this.ribbonInner.scrollBy(-350, 0);
-            console.log('click left');
-        });
-
-        this.arrowRight.addEventListener('click', () => {
-            this.ribbonInner.scrollBy(350, 0);
-            console.log('click right');
-        });
-
-    }
-
-    checkArrows() {
-        console.log(this.ribbonInner.style);
-
-        if(this.ribbonInner.scrollLeft === 0) {
-            this.arrowLeft.classList.remove('ribbon__arrow_visible');
-            console.log('scrollleft = 0');
-        } else {
-            this.arrowLeft.classList.add('ribbon__arrow_visible');
-            console.log('scrollleft != 0');
-        }
-        if((this.ribbonInner.scrollWidth - this.ribbonInner.scrollLeft - this.ribbonInner.clientWidth) < 1) {
-            this.arrowRight.classList.remove('ribbon__arrow_visible');
-            console.log('scrollright = 0');
-        } else {
-            this.arrowRight.classList.add('ribbon__arrow_visible');
-            console.log('scrollright != 0');
-        }
-    }
-
-    initMenu() {
-        
     }
 }
